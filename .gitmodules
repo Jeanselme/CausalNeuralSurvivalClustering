@@ -1,0 +1,9 @@
+[submodule "auton-survival"]
+	path = auton-survival
+	url = git@github.com:autonlab/auton-survival.git
+[submodule "DeepSurvivalMachines"]
+	path = DeepSurvivalMachines
+	url = git@github.com:Jeanselme/DeepSurvivalMachines.git
+[submodule "NSC"]
+	path = NSC
+	url = git@github.com:Jeanselme/NeuralSurvivalClustering.git
