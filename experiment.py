@@ -257,7 +257,7 @@ class CMHEExperiment(Experiment):
 
         return te_cluster
 
-class NTCExperiment(Experiment):
+class CNSCExperiment(Experiment):
 
     def _predict_cluster_(self, model, x):
         return model.predict_alphas(x)
@@ -276,14 +276,14 @@ class NTCExperiment(Experiment):
         return super().train(x, t_norm, e, a)
 
     def _fit_(self, x, t, e, a, x_val, t_val, e_val, a_val, hyperparameter):  
-        from ntc import NeuralTreatmentCluster
+        from cnsc import CausalNeuralSurvivalClustering
 
         epochs = hyperparameter.pop('epochs', 1000)
         batch = hyperparameter.pop('batch', 250)
         gamma = hyperparameter.pop('gamma', 0.)
         lr = hyperparameter.pop('learning_rate', 0.001)
 
-        model = NeuralTreatmentCluster(**hyperparameter)
+        model = CausalNeuralSurvivalClustering(**hyperparameter)
         model.fit(x, t, e, a, n_iter = epochs, bs = batch, gamma = gamma,
                 lr = lr, val_data = (x_val, t_val, e_val, a_val))
         return model

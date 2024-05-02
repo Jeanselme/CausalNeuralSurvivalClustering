@@ -1,12 +1,12 @@
-from ntc.ntc_torch import NeuralTreatmentClusterTorch
-from ntc.losses import *
-from ntc.utilities import train_ntc
+from cnsc.cnsc import CausalNeuralSurvivalClusteringTorch
+from cnsc.losses import *
+from cnsc.utilities import train_cnsc
 
 import torch
 import numpy as np
 from tqdm import tqdm
 
-class NeuralTreatmentCluster:
+class CausalNeuralSurvivalClustering:
 
   def __init__(self, cuda = torch.cuda.is_available(), correct = True, **params):
     self.params = params
@@ -15,7 +15,7 @@ class NeuralTreatmentCluster:
     self.correct = correct
 
   def _gen_torch_model(self, inputdim, optimizer):
-    model = NeuralTreatmentClusterTorch(inputdim, 
+    model = CausalNeuralSurvivalClusteringTorch(inputdim, 
                                      **self.params,
                                      optimizer = optimizer).double()
     if self.cuda > 0:
@@ -31,11 +31,11 @@ class NeuralTreatmentCluster:
 
     model = self._gen_torch_model(x_train.size(1), optimizer)
     if self.correct:
-      model = train_ntc(model,
+      model = train_cnsc(model,
                           x_train, t_train, e_train, a_train,
                           x_val, t_val, e_val, a_val, cuda = self.cuda == 2, loss_f = propensity_loss,
                           **args)
-    model = train_ntc(model,
+    model = train_cnsc(model,
                       x_train, t_train, e_train, a_train,
                       x_val, t_val, e_val, a_val, cuda = self.cuda == 2, 
                       loss_f = total_loss, correct = self.correct,

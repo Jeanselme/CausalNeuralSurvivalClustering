@@ -2,7 +2,7 @@
 # # Comparsion models for competing risks
 # In this script we train the different models for competing risks
 import sys
-from ntc import datasets
+from cnsc import datasets
 from experiment import *
 
 random_seed = 42
@@ -36,9 +36,9 @@ for k in range(1, 7):
         'gamma': [0],
         'correct': [True]
     }
-    NTCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_ntc/{}_ntc+k={}'.format(dataset, k), random_seed = random_seed).train(x, t, e, a)
+    CNSCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_cnsc/{}_cnsc+k={}'.format(dataset, k), random_seed = random_seed).train(x, t, e, a)
 
-# NTC Competing risk
+# CNSC Competing risk
 param_grid = {
     'epochs': [max_epochs],
     'learning_rate' : [1e-3, 1e-4],
@@ -52,10 +52,10 @@ param_grid = {
     'gamma': [0],
     'correct' : [True]
 }
-NTCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_ntc/{}_ntc'.format(dataset), random_seed = random_seed).train(x, t, e, a)
+CNSCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_ntc/{}_cnsc'.format(dataset), random_seed = random_seed).train(x, t, e, a)
 
 param_grid['correct'] = [False]
-NTCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_ntc/{}_ntc+uncorrect'.format(dataset), random_seed = random_seed).train(x, t, e, a)
+CNSCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_cnsc/{}_cnsc+uncorrect'.format(dataset), random_seed = random_seed).train(x, t, e, a)
 
 
 # CMHE
@@ -68,9 +68,9 @@ param_grid = {
     'k': [1, 2, 3],
     'g': [1, 2, 3],
 }
-CMHEExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_ntc/{}_cmhe'.format(dataset), random_seed = random_seed).train(x, t, e, a)
+CMHEExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_cnsc/{}_cmhe'.format(dataset), random_seed = random_seed).train(x, t, e, a)
 
 param_grid['k'] = [2]
 param_grid['g'] = [2]
-CMHEExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_ntc/{}_cmhe_kg'.format(dataset), random_seed = random_seed).train(x, t, e, a)
+CMHEExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_cnsc/{}_cmhe_kg'.format(dataset), random_seed = random_seed).train(x, t, e, a)
 

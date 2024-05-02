@@ -3,12 +3,12 @@ from torch.autograd import grad
 import torch.nn as nn
 import torch
 
-class NeuralTreatmentClusterTorch(nn.Module):
+class CausalNeuralSurvivalClusteringTorch(nn.Module):
 
   def __init__(self, inputdim, layers = [100, 100, 100], act = 'ReLU',
                layers_surv = [100], representation = 50, 
                k = 3, dropout = 0., optimizer = "Adam", multihead = False):
-    super(NeuralTreatmentClusterTorch, self).__init__()
+    super(CausalNeuralSurvivalClusteringTorch, self).__init__()
     self.input_dim = inputdim
     self.k = k # Number clusters
     self.representation = representation # Latent input for clusters (centroid representation)

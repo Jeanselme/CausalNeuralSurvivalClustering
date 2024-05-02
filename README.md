@@ -1,23 +1,23 @@
 # Causal Neural Survival Clustering
 This repository allows to reproduce the results in [Causal Neural Survival Clustering]()
-A neural network approach to identifying treatments effect subgroups, leveraging monotone neural networks to model the cumulative incidence function of each group.
+A micture of treatments effects parametrised by monotone neural networks to model the cumulative incidence function of each group under treatment and control regimes.
 
 ## Model
-The model consists in two neural networks for estimating the survival distributions: one models the cumulative incidence function and the other the balance to ensure that they add up to one. These models rely on a latent parameters that represent each cluster and the **assigned treatment**. An additional model aims to assigns each point to one of these distributions. Finally to tackle the problem of non-random treatment assigment, the embedding is penalised by a Wasserstein distance between the different treatments' assignment distributions.
+The model consists of three neural networks for estimating the survival distributions: M models the cumulative incidence function under both treatmen regimes, C assigns each patient to the different clusters, and W computes the likelihood to receive treatment to adjust the likelihood.  
 
 ![Model](./images/ntc.png)
 
 ## How to use ?
 To use the model, one needs to execute:
 ```python
-from ntc import NeuralTreatmentCluster
-model = NeuralTreatmentCluster(mask = mask)
-model.fit(x, t, e)
+from cnsc import CausalNeuralSurvivalClustering
+model = CausalNeuralSurvivalClustering()
+model.fit(x, t, e, a)
 model.predict_risk(x, risk = 1)
 ```
-With `x` the covarites, `t` the time of end of follow-up, `e` the associated cause (the model allows for competing risks) and `mask` the covariates dimensions corresponding to the assigned treatment.
+With `x` the covarites, `t` the time of end of follow-up, `e` the associated cause (the model allows for competing risks) and `a` the assigned treatment.
 
-A full example with analysis is provided in `examples/Causal Neural Survival Clustering on METABRIC Dataset.ipynb`.
+A full example with analysis is provided in `examples/Causal Neural Survival Clustering on Seer Dataset.ipynb`.
 
 ## Reproduce paper's results
 To reproduce the paper's results:
@@ -25,13 +25,12 @@ To reproduce the paper's results:
 0. Clone the repository with dependencies: `git clone git@github.com:Jeanselme/NeuralTreatment.git --recursive`.
 1. Create a conda environment with all necessary libraries `pycox`, `lifelines`, `pysurvival`.
 2. Add path `export PYTHONPATH="$PWD:$PWD/DeepSurvivalMachines:$PYTHONPATH"`.
-3. Run `examples/experiment_ntc.py SEER`.
-5. Analysis using `examples/Analysis NTC.ipynb`.
+3. Run `examples/experiment_cnsc.py SEER`.
+5. Analysis using `examples/Analysis CNSC.ipynb`.
 
 ## Compare to a new method
 Adding a new method consists in adding a child to `Experiment` in `experiment.py` with functions to compute the nll and fit the model.
-Then, add the method in `examples/experiment_treatment_effect.py` and follow the previous point. 
-`TODOs` have been added to make the addition of a new method easier.
+Then, add the method in `examples/experiment_cnsc.py` and follow the previous point. 
 
 # Setup
 ## Structure

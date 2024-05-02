@@ -1,4 +1,4 @@
-from ntc.losses import total_loss
+from cnsc.losses import total_loss
 import torch
 import torch.nn as nn
 import numpy as np
@@ -82,7 +82,7 @@ def get_optimizer(models, lr, optimizer, **kwargs):
     else:
         raise NotImplementedError('Optimizer '+optimizer+' is not implemented')
 
-def train_ntc(model,
+def train_cnsc(model,
               x_train, t_train, e_train, m_train,
               x_valid, t_valid, e_valid, m_valid,
               n_iter = 1000, lr = 1e-3, weight_decay = 0.001, gamma = 0,
