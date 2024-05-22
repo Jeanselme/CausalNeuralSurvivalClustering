@@ -17,14 +17,14 @@ model.predict_risk(x, risk = 1)
 ```
 With `x` the covarites, `t` the time of end of follow-up, `e` the associated cause (the model allows for competing risks) and `a` the assigned treatment.
 
-A full example with analysis is provided in `examples/Causal Neural Survival Clustering on Seer Dataset.ipynb`.
+A full example with analysis is provided in `examples/Causal Neural Survival Clustering on METABRIC Dataset.ipynb` using a publicly available dataset for reproducibility.
 
 ## Reproduce paper's results
 To reproduce the paper's results:
 
-0. Clone the repository with dependencies: `git clone git@github.com:Jeanselme/NeuralTreatment.git --recursive`.
+0. Clone the repository with dependencies: `git clone git@github.com:Jeanselme/CausalNeuralSurvivalClustering.git --recursive`.
 1. Create a conda environment with all necessary libraries `pycox`, `lifelines`, `pysurvival`.
-2. Add path `export PYTHONPATH="$PWD:$PWD/DeepSurvivalMachines:$PYTHONPATH"`.
+2. Add path `export PYTHONPATH="$PWD:$PWD"`.
 3. Run `examples/experiment_cnsc.py SEER`.
 5. Analysis using `examples/Analysis CNSC.ipynb`.
 
@@ -34,13 +34,13 @@ Then, add the method in `examples/experiment_cnsc.py` and follow the previous po
 
 # Setup
 ## Structure
-We followed the same architecture than the [DeepSurvivalMachines](https://github.com/autonlab/DeepSurvivalMachines) repository with the model in `ntc/` - only the api should be used to test the model. Examples are provided in `examples/`. 
+We followed the same architecture than the [DeepSurvivalMachines](https://github.com/autonlab/DeepSurvivalMachines) repository with the model in `cnsc/` - only the api should be used to test the model. Examples are provided in `examples/`. 
 
 ## Clone
 ```
-git clone git@github.com:Jeanselme/NeuralTreatment.git --recursive
+git clone git@github.com:Jeanselme/CausalNeuralSurvivalClustering.git
 ```
 
 ## Requirements
-The model relies on `DeepSurvivalMachines`, `pytorch >= 2.0`, `numpy` and `tqdm`.  
-To run the set of experiments `pycox`, `lifelines`, `pysurvival` are necessary.
+The model relies on `pytorch >= 2.0`, `numpy` and `tqdm`.  
+To run the set of experiments `auton_survival`, `pycox`, `lifelines`, `pysurvival` are necessary.

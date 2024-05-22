@@ -6,6 +6,9 @@ from tqdm import tqdm
 from copy import deepcopy
 
 class PositiveLinear(nn.Module):
+    """
+    Neural network with positive weights to ensure monotonicity of output
+    """
     def __init__(self, in_features, out_features, bias = False):
         super(PositiveLinear, self).__init__()
         self.in_features = in_features
@@ -85,9 +88,12 @@ def get_optimizer(models, lr, optimizer, **kwargs):
 def train_cnsc(model,
               x_train, t_train, e_train, m_train,
               x_valid, t_valid, e_valid, m_valid,
-              n_iter = 1000, lr = 1e-3, weight_decay = 0.001, gamma = 0,
+              n_iter = 1000, lr = 1e-3, weight_decay = 0.001,
               bs = 100, patience_max = 10, cuda = False, 
               loss_f = total_loss, correct = True):
+    """
+        Training procedure with early stopping criterion
+    """
     optimizer = get_optimizer(model, lr, model.optimizer, weight_decay = weight_decay)
     patience, best_loss = 0, np.inf
     best_param = deepcopy(model.state_dict())
@@ -119,7 +125,7 @@ def train_cnsc(model,
                               tb,
                               eb,
                               ab, 
-                              correct, gamma) 
+                              correct) 
             loss.backward()
             optimizer.step()
             train_loss += loss.item() / nbatches
@@ -134,7 +140,7 @@ def train_cnsc(model,
                                 tb,
                                 eb,
                                 ab,
-                                correct, gamma).item() 
+                                correct).item() 
         mssg = "Loss: {:.3f} - Training: {:.3f} ".format(valid_loss, train_loss)
         t_bar.set_description(mssg)
         if valid_loss < best_loss:

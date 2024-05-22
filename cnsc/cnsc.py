@@ -4,6 +4,9 @@ import torch.nn as nn
 import torch
 
 class CausalNeuralSurvivalClusteringTorch(nn.Module):
+  """
+  The model presents two alternative with single head (one shared across cluster) and one per cluster.
+  """
 
   def __init__(self, inputdim, layers = [100, 100, 100], act = 'ReLU',
                layers_surv = [100], representation = 50, 
