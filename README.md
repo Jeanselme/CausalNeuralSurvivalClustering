@@ -1,9 +1,11 @@
 # Causal Neural Survival Clustering
-This repository allows to reproduce the results in [Causal Neural Survival Clustering]()
-A micture of treatments effects parametrised by monotone neural networks to model the cumulative incidence function of each group under treatment and control regimes.
+This repository allows to use the model and reproduce the results introduced in [Causal Neural Survival Clustering]().
+This models aim to uncover subgroups of patients with different treatment effects.
+Each patient is assigned to a subgroup characterised by two neural networks modelling survival under treatment and control regimes.
+
 
 ## Model
-The model consists of three neural networks for estimating the survival distributions: M models the cumulative incidence function under both treatmen regimes, C assigns each patient to the different clusters, and W computes the likelihood to receive treatment to adjust the likelihood.  
+The model consists of three neural networks for estimating the survival distributions: M models the cumulative incidence function under both treatment regimes given a latent representation for each cluster, G assigns each patient to the different subgroups, and W computes the probability to receive treatment to adjust the likelihood for observational study.
 
 ![Model](./images/ntc.png)
 
