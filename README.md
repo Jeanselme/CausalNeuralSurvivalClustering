@@ -1,5 +1,5 @@
 # Causal Neural Survival Clustering
-This repository allows to use the model and reproduce the results introduced in [Causal Neural Survival Clustering]().
+This repository allows to use the model and reproduce the results introduced in [Identifying treatment response subgroups in observational time-to-event data](https://arxiv.org/abs/2408.03463).
 This models aim to uncover subgroups of patients with different treatment effects.
 Each patient is assigned to a subgroup characterised by two neural networks modelling survival under treatment and control regimes.
 
@@ -17,9 +17,9 @@ model = CausalNeuralSurvivalClustering()
 model.fit(x, t, e, a)
 model.predict_risk(x, risk = 1)
 ```
-With `x` the covarites, `t` the time of end of follow-up, `e` the associated cause (the model allows for competing risks) and `a` the assigned treatment.
+With `x` the covariates, `t` the time of observed events, `e` the associated cause (0 if censored, 1 if the outcome of interest) and `a` the binary treatment.
 
-A full example with analysis is provided in `examples/Causal Neural Survival Clustering on METABRIC Dataset.ipynb` using a publicly available dataset for reproducibility.
+A full example with analysis is provided in `examples/Causal Neural Survival Clustering on METABRIC Dataset.ipynb` using a publicly available dataset for reproducibility. Note that this dataset does not meet the assumptions necessary to estimate treatment effect, and should consequently only be used as a tutorial on how to use the model.
 
 ## Reproduce paper's results
 To reproduce the paper's results:
