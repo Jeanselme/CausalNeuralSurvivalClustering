@@ -1,0 +1,12 @@
+python experiment_cluster.py 0
+python experiment_cluster.py 1
+python experiment_homogenous.py 0
+python experiment_homogenous.py 1
+python experiment_linear.py 0
+python experiment_linear.py 1
+python experiment_small.py 0
+python experiment_small.py 1
+python experiment_treat.py 0
+python experiment_treat.py 1
+python experiment_size.py 0
+python experiment_size.py 1

@@ -321,3 +321,39 @@ class CNSCExperiment(Experiment):
             te_cluster[i] = model.treatment_effect_cluster(t_norm.tolist())
 
         return te_cluster
+
+class KmeansExperiment(Experiment):
+
+    def _fit_(self, x, t, e, a, x_val, t_val, e_val, a_val, hyperparameter):  
+        from alternatives import TEKMeans
+        model = TEKMeans(**hyperparameter)
+        model.fit(x, t, e, a)
+        return model
+
+    def _predict_(self, model, x, times, a):
+        return model.predict_survival(x, times.tolist(), a)
+    
+    def clusters(self, t):
+        te_cluster = {}
+        for i in self.best_model:
+            model = self.best_model[i]
+            te_cluster[i] = model.treatment_effect_cluster(t.tolist())
+
+        return te_cluster
+
+    def _predict_cluster_(self, model, x):
+        return model.predict_alphas(x)
+
+    def _predict_(self, model, x, times, a):
+        return model.predict_survival(x, times.tolist(), a)
+    
+    def _nll_(self, model, x, t, e, a, hyperparameter, *train):
+        return model.compute_nll(x, t, e, a)
+    
+class VirtualTwinsExperiment(KmeansExperiment):
+
+    def _fit_(self, x, t, e, a, x_val, t_val, e_val, a_val, hyperparameter):  
+        from alternatives import VirtualTwins
+        model = VirtualTwins(**hyperparameter)
+        model.fit(x, t, e, a)
+        return model
