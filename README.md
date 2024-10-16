@@ -19,6 +19,12 @@ model.predict_risk(x, risk = 1)
 ```
 With `x` the covariates, `t` the time of observed events, `e` the associated cause (0 if censored, 1 if the outcome of interest) and `a` the binary treatment.
 
+Then to explore the subgroup strucutre and associated treatmente effects:
+```python
+model.predict_alphas(x) # Obtain the soft assignment to the different clusters
+model.treatment_effect_cluster(horizons) # Compute the survival of the different clusters at different horizons
+```
+
 A full example with analysis is provided in `examples/Causal Neural Survival Clustering on METABRIC Dataset.ipynb` using a publicly available dataset for reproducibility. Note that this dataset does not meet the assumptions necessary to estimate treatment effect, and should consequently only be used as a tutorial on how to use the model.
 
 ## Reproduce paper's results
@@ -30,6 +36,8 @@ To reproduce the paper's results:
 3. Run `examples/experiment_cnsc.py SEER`.
 5. Analysis using `examples/Analysis CNSC.ipynb`.
 
+In addition `simulations/` contain the different simulation studies proposed in the paper.
+
 ## Compare to a new method
 Adding a new method consists in adding a child to `Experiment` in `experiment.py` with functions to compute the nll and fit the model.
 Then, add the method in `examples/experiment_cnsc.py` and follow the previous point. 
@@ -40,7 +48,7 @@ We followed the same architecture than the [DeepSurvivalMachines](https://github
 
 ## Clone
 ```
-git clone git@github.com:Jeanselme/CausalNeuralSurvivalClustering.git
+git clone --recursive git@github.com:Jeanselme/CausalNeuralSurvivalClustering.git
 ```
 
 ## Requirements
