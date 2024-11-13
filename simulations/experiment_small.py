@@ -52,7 +52,6 @@ param_grid = {
     'k': [3],
     'layers' : layers,
     'act': ['Tanh'],
-    'gamma': [0],
     'correct' : [True]
 }
 CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generatesmall_{}={}_ntc'.format(mode, random_seed)).train(x, t, e, a)

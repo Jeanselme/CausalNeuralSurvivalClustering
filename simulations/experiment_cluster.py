@@ -57,7 +57,6 @@ for centers in centers_list:
         'k': [len(centers)],
         'layers' : layers,
         'act': ['Tanh'],
-        'gamma': [0],
         'correct' : [True]
     }
     CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generate_{}={}+{}_ntc'.format(mode, random_seed, len(centers))).train(x, t, e, a)

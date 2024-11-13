@@ -25,6 +25,6 @@ def total_loss(model, x, t, e, a, correct = True):
 
   return error / torch.sum(weights)
 
-def propensity_loss(model, x, t, e, a, correct = True, gamma = 0):
+def propensity_loss(model, x, t, e, a, correct = True):
   propensity = model.propensity(x)
   return torch.nn.BCELoss()(propensity, a.double())

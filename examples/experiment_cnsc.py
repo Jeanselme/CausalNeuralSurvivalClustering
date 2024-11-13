@@ -33,7 +33,6 @@ for k in range(1, 7):
         'layers' : layers,
         'act': ['Tanh'],
 
-        'gamma': [0],
         'correct': [True]
     }
     CNSCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_cnsc/{}_cnsc+k={}'.format(dataset, k), random_seed = random_seed).train(x, t, e, a)
@@ -49,7 +48,6 @@ param_grid = {
     'k': [2, 3, 4, 5],
     'layers' : layers,
     'act': ['Tanh'],
-    'gamma': [0],
     'correct' : [True]
 }
 CNSCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_ntc/{}_cnsc'.format(dataset), random_seed = random_seed).train(x, t, e, a)

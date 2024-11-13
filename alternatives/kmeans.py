@@ -32,7 +32,7 @@ class TEKMeans:
         self.fitted = True
         return self    
 
-    def compute_nll(self, x, t, e, a, gamma = 0):
+    def compute_nll(self, x, t, e, a):
         if not self.fitted:
             raise Exception("The model has not been fitted yet. Please fit the " +
                             "model using the `fit` method on some training data " +

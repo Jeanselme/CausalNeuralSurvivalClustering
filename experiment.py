@@ -280,11 +280,10 @@ class CNSCExperiment(Experiment):
 
         epochs = hyperparameter.pop('epochs', 1000)
         batch = hyperparameter.pop('batch', 250)
-        gamma = hyperparameter.pop('gamma', 0.)
         lr = hyperparameter.pop('learning_rate', 0.001)
 
         model = CausalNeuralSurvivalClustering(**hyperparameter)
-        model.fit(x, t, e, a, n_iter = epochs, bs = batch, gamma = gamma,
+        model.fit(x, t, e, a, n_iter = epochs, bs = batch, 
                 lr = lr, val_data = (x_val, t_val, e_val, a_val))
         return model
 
@@ -292,7 +291,7 @@ class CNSCExperiment(Experiment):
         return model.predict_survival(x, times.tolist(), a)
     
     def _nll_(self, model, x, t, e, a, hyperparameter, *train):
-        return model.compute_nll(x, t, e, a, gamma = hyperparameter.pop('gamma', 0.))
+        return model.compute_nll(x, t, e, a)
 
     def likelihood(self, x, t, e, a):
         t_norm = self.__preprocess__(t)

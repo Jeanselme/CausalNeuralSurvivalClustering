@@ -53,14 +53,12 @@ for size in [300, 30000]:
         'k': [3],
         'layers' : layers,
         'act': ['Tanh'],
-        'gamma': [0],
         'correct' : [True]
     }
     CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generatesize_{}={}+{}_ntc'.format(mode, random_seed, size)).train(x, t, e, a)
 
     param_grid['correct'] = [False]
     CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generatesize_{}={}+{}_ntc+uncorrect'.format(mode, random_seed, size)).train(x, t, e, a)
-
 
     # CMHE
     param_grid = {

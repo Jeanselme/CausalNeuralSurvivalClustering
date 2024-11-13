@@ -53,7 +53,6 @@ for percentage_treatment in [0.25, 0.75]:
         'k': [3],
         'layers' : layers,
         'act': ['Tanh'],
-        'gamma': [0],
         'correct' : [True]
     }
     CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generatetreat_{}={}+{}_ntc'.format(mode, random_seed, percentage_treatment)).train(x, t, e, a)

@@ -57,7 +57,7 @@ def create_representation(inputdim, layers, activation, dropout = 0., last = Non
         act = nn.ReLU()
     elif activation == 'Tanh':
         act = nn.Tanh()
-    elif act == 'Sigmoid':
+    elif activation == 'Sigmoid':
         act = nn.Sigmoid() # For logistic regression implementation
 
     modules = []
