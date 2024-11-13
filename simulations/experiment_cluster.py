@@ -67,10 +67,14 @@ for centers in centers_list:
             CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generate_{}={}+{}_ntc_k={}'.format(mode, random_seed, len(centers), size)).train(x, t, e, a)
         param_grid['k'] = [len(centers)]
 
-    param_grid['gamma'] = [0]
     param_grid['correct'] = [False]
     CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generate_{}={}+{}_ntc+uncorrect'.format(mode, random_seed, len(centers))).train(x, t, e, a)
 
+    # Parametrise for logistic regression on both treatment and assignment
+    param_grid['correct'] = [True]
+    param_grid['layers'] = [[]]
+    param_grid['act'] = ['Sigmoid']
+    CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generate_{}+{}={}_ntc+linear'.format(mode, random_seed, len(centers))).train(x, t, e, a)
 
     # CMHE
     param_grid = {
