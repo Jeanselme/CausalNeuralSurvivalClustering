@@ -14,6 +14,7 @@ try:
     elif int(mode) == 1:
         mode = 'obs'
 except: pass
+os.makedirs("Results/small/", exist_ok=True)
 
 print("Script running experiments on generated data with seed =", random_seed)
 x, a, t, e, _ = generate(random_seed, mode = mode, proportions = [0.625, 0.25, 0.125]) 
@@ -25,13 +26,13 @@ x, t, e, a = StandardScaler().fit_transform(x.values).astype(float),\
 # Hyperparameters and evaluations
 max_epochs = 1000
 grid_search = 100
-layers = [[50] * (j + 1) for j in range(3)]
+layers = [[50] * j for j in range(4)]
 
 # Clustering
 param_grid = {
     'n_clusters': [3]
 }
-KmeansExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generatesmall_{}={}_kmeans'.format(mode, random_seed)).train(x, t, e, a)
+KmeansExperiment.create(param_grid, n_iter = grid_search, path = 'Results/small/{}={}_kmeans'.format(mode, random_seed)).train(x, t, e, a)
 
 # VirtualTwins
 param_grid = {
@@ -39,7 +40,7 @@ param_grid = {
     'max_depth': [3, 5, None],
     'min_samples_split': [6, 12, 24],
 }
-VirtualTwinsExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generatesmall_{}={}_twins'.format(mode, random_seed)).train(x, t, e, a)
+VirtualTwinsExperiment.create(param_grid, n_iter = grid_search, path = 'Results/small/{}={}_twins'.format(mode, random_seed)).train(x, t, e, a)
 
 # NTC Competing risk
 param_grid = {
@@ -50,14 +51,15 @@ param_grid = {
     'layers_surv': layers,
     'representation': [10, 25, 50],
     'k': [3],
-    'layers' : layers,
+    'layers_assignment' : layers,
+    'layers_treat': layers,
     'act': ['Tanh'],
     'correct' : [True]
 }
-CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generatesmall_{}={}_ntc'.format(mode, random_seed)).train(x, t, e, a)
+CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results/small/{}={}_ntc'.format(mode, random_seed)).train(x, t, e, a)
 
 param_grid['correct'] = [False]
-CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generatesmall_{}={}_ntc+uncorrect'.format(mode, random_seed)).train(x, t, e, a)
+CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results/small/{}={}_ntc+uncorrect'.format(mode, random_seed)).train(x, t, e, a)
 
 
 # CMHE
@@ -70,7 +72,7 @@ param_grid = {
     'k': [1],
     'g': [3],
 }
-CMHEExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generatesmall_{}={}_cmhe+g'.format(mode, random_seed)).train(x, t, e, a)
+CMHEExperiment.create(param_grid, n_iter = grid_search, path = 'Results/small/{}={}_cmhe+g'.format(mode, random_seed)).train(x, t, e, a)
 
 param_grid = {
     'epochs': [max_epochs],
@@ -81,7 +83,7 @@ param_grid = {
     'k': [3],
     'g': [1],
 }
-CMHEExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generatesmall_{}={}_cmhe+k'.format(mode, random_seed)).train(x, t, e, a)
+CMHEExperiment.create(param_grid, n_iter = grid_search, path = 'Results/small/{}={}_cmhe+k'.format(mode, random_seed)).train(x, t, e, a)
 
 param_grid = {
     'epochs': [max_epochs],
@@ -92,4 +94,4 @@ param_grid = {
     'k': [3 // 2 + 1],
     'g': [3 // 2 + 1],
 }
-CMHEExperiment.create(param_grid, n_iter = grid_search, path = 'Results_ntc/generatesmall_{}={}_cmhe+gk'.format(mode, random_seed)).train(x, t, e, a)
+CMHEExperiment.create(param_grid, n_iter = grid_search, path = 'Results/small/{}={}_cmhe+gk'.format(mode, random_seed)).train(x, t, e, a)

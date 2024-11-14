@@ -8,8 +8,8 @@ class CausalNeuralSurvivalClusteringTorch(nn.Module):
   The model presents two alternative with single head (one shared across cluster) and one per cluster.
   """
 
-  def __init__(self, inputdim, layers = [100, 100, 100], act = 'ReLU',
-               layers_surv = [100], representation = 50, 
+  def __init__(self, inputdim, layers_assignment = [], act = 'ReLU',
+               layers_treat = [], layers_surv = [100], representation = 50, 
                k = 3, dropout = 0., optimizer = "Adam", multihead = False):
     super(CausalNeuralSurvivalClusteringTorch, self).__init__()
     self.input_dim = inputdim
@@ -19,8 +19,8 @@ class CausalNeuralSurvivalClusteringTorch(nn.Module):
     self.optimizer = optimizer
 
     # Assign points to cluster
-    self.profile = create_representation(inputdim, layers + [self.k], act, self.dropout, last = nn.LogSoftmax(dim = 1)) # Assign each point to a cluster
-    self.treatment = create_representation(inputdim, layers + [1], act, self.dropout, last = nn.Sigmoid())
+    self.profile = create_representation(inputdim, layers_assignment + [self.k], act, self.dropout, last = nn.LogSoftmax(dim = 1)) # Assign each point to a cluster
+    self.treatment = create_representation(inputdim, layers_treat + [1], act, self.dropout, last = nn.Sigmoid())
     
     # Cluster of treatment responses
     self.latent = nn.ParameterList([nn.Parameter(torch.randn((1, self.representation))) for _ in range(self.k)])
