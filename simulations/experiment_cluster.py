@@ -13,6 +13,8 @@ try:
         mode = 'rand' 
     elif int(mode) == 1:
         mode = 'obs'
+    else:
+        mode = 'inf'
 except: pass
 
 os.makedirs("Results/cluster/", exist_ok=True)

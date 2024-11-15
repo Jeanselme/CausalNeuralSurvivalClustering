@@ -66,6 +66,9 @@ def generate(random_seed = 42, size = 3000, mode = 'rand', centers = ([0, 2.25],
         # Treatment is proportional to treatment response
         assignment = (x ** 2).sum(1)
         assignment_dig = np.digitize(assignment, bins = np.quantile(assignment, np.linspace(0, 1, 100))) / 100
+        if mode == "inf":
+            percentage_treatment = np.array([0.25, 0.5, 0.75])
+            percentage_treatment = percentage_treatment[z]
         assignment_dig = np.clip(assignment_dig * 2 * percentage_treatment, a_min = 0.1, a_max = 0.9)
         outcomes['treatment'] = bernoulli.rvs(assignment_dig) # Draw from uniform with proba percentage
 

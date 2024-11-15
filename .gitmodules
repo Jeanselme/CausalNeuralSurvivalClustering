@@ -7,3 +7,6 @@
 [submodule "NSC"]
 	path = NSC
 	url = git@github.com:Jeanselme/NeuralSurvivalClustering.git
+[submodule "CompDeepSurv"]
+	path = CompDeepSurv
+	url = git@github.com:Jeanselme/CompDeepSurv.git
