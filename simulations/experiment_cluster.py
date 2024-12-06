@@ -66,7 +66,7 @@ for centers in centers_list:
     }
     CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results/cluster/{}={}+{}_ntc'.format(mode, random_seed, len(centers))).train(x, t, e, a)
     if mode == 'obs' and (len(centers) == 3):
-        for size in [2, 6]:
+        for size in [2, 5, 6]:
             param_grid['k'] = [size]
             CNSCExperiment.create(param_grid, n_iter = grid_search, path = 'Results/cluster/{}={}+{}_ntc_k={}'.format(mode, random_seed, len(centers), size)).train(x, t, e, a)
         param_grid['k'] = [len(centers)]
