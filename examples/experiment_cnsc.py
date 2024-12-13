@@ -32,14 +32,14 @@ for k in range(1, 7):
         'layers_surv': layers,
         'representation': [10, 25, 50],
         'k': [k],
-        'layers' : layers,
+        'layers_assignment' : layers,
+        'layers_treat': layers,
         'act': ['Tanh'],
-
-        'correct': [True]
+        'correct' : [True]
     }
     CNSCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results/{}/cnsc+k={}'.format(dataset, k), random_seed = random_seed).train(x, t, e, a)
 
-# CNSC Competing risk
+# CNSC
 param_grid = {
     'epochs': [max_epochs],
     'learning_rate' : [1e-3, 1e-4],
@@ -47,8 +47,9 @@ param_grid = {
 
     'layers_surv': layers,
     'representation': [10, 25, 50],
-    'k': [1, 2, 3, 4, 5],
-    'layers' : layers,
+    'k': [1, 2, 3, 4, 5, 6],
+    'layers_assignment' : layers,
+    'layers_treat': layers,
     'act': ['Tanh'],
     'correct' : [True]
 }
