@@ -16,10 +16,12 @@ if len(sys.argv) > 3:
 print("Script running experiments on ", dataset)
 x, a, t, e, covariates = datasets.load_dataset(dataset, path = path) 
 
+os.makedirs("Results/{}/".format(dataset), exist_ok=True)
+
 # Hyperparameters and evaluations
 max_epochs = 1000
 grid_search = 50
-layers = [[50] * (j + 1) for j in range(3)]
+layers = [[50] * j for j in range(4)]
 
 for k in range(1, 7):
     param_grid = {
@@ -35,7 +37,7 @@ for k in range(1, 7):
 
         'correct': [True]
     }
-    CNSCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_cnsc/{}_cnsc+k={}'.format(dataset, k), random_seed = random_seed).train(x, t, e, a)
+    CNSCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results/{}/cnsc+k={}'.format(dataset, k), random_seed = random_seed).train(x, t, e, a)
 
 # CNSC Competing risk
 param_grid = {
@@ -45,15 +47,15 @@ param_grid = {
 
     'layers_surv': layers,
     'representation': [10, 25, 50],
-    'k': [2, 3, 4, 5],
+    'k': [1, 2, 3, 4, 5],
     'layers' : layers,
     'act': ['Tanh'],
     'correct' : [True]
 }
-CNSCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_ntc/{}_cnsc'.format(dataset), random_seed = random_seed).train(x, t, e, a)
+CNSCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results/{}/cnsc'.format(dataset), random_seed = random_seed).train(x, t, e, a)
 
 param_grid['correct'] = [False]
-CNSCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_cnsc/{}_cnsc+uncorrect'.format(dataset), random_seed = random_seed).train(x, t, e, a)
+CNSCExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results/{}/cnsc+uncorrect'.format(dataset), random_seed = random_seed).train(x, t, e, a)
 
 
 # CMHE
@@ -66,9 +68,9 @@ param_grid = {
     'k': [1, 2, 3],
     'g': [1, 2, 3],
 }
-CMHEExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_cnsc/{}_cmhe'.format(dataset), random_seed = random_seed).train(x, t, e, a)
+CMHEExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results/{}/cmhe'.format(dataset), random_seed = random_seed).train(x, t, e, a)
 
 param_grid['k'] = [2]
 param_grid['g'] = [2]
-CMHEExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results_cnsc/{}_cmhe_kg'.format(dataset), random_seed = random_seed).train(x, t, e, a)
+CMHEExperiment.create(param_grid, fold = fold, n_iter = grid_search, path = 'Results/{}/cmhe_kg'.format(dataset), random_seed = random_seed).train(x, t, e, a)
 
