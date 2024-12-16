@@ -262,18 +262,8 @@ class CNSCExperiment(Experiment):
     def _predict_cluster_(self, model, x):
         return model.predict_alphas(x)
     
-    def __preprocess__(self, t, save = False):
-        if save:
-            self.max_t = t.max()
-        return t / self.max_t
-    
     def save_results(self, x, times):
-        return super().save_results(x, self.__preprocess__(times))
-
-    def train(self, x, t, e, a):
-        self.times = np.linspace(t.min(), t.max(), self.times) if isinstance(self.times, int) else self.times
-        t_norm = self.__preprocess__(t, True)
-        return super().train(x, t_norm, e, a)
+        return super().save_results(x, times)
 
     def _fit_(self, x, t, e, a, x_val, t_val, e_val, a_val, hyperparameter):  
         from cnsc import CausalNeuralSurvivalClustering
@@ -294,30 +284,27 @@ class CNSCExperiment(Experiment):
         return model.compute_nll(x, t, e, a)
 
     def likelihood(self, x, t, e, a):
-        t_norm = self.__preprocess__(t)
-        return super().likelihood(x, t_norm, e, a)
+        return super().likelihood(x, t, e, a)
     
     def importance(self, x, t, e, a, **params):
         """
             Compute the permutation importance of the different features
         """
         x = self.scaler.transform(x)
-        t_norm = self.__preprocess__(t)
         importance = {}
 
         for i in self.best_model:
             index = self.fold_assignment[self.fold_assignment == i].index
             model = self.best_model[i]
-            importance[i] = model.feature_importance(x[index], t_norm[index], e[index], a[index], **params)
+            importance[i] = model.feature_importance(x[index], t[index], e[index], a[index], **params)
 
         return importance
     
     def clusters(self, t):
         te_cluster = {}
-        t_norm = self.__preprocess__(t)
         for i in self.best_model:
             model = self.best_model[i]
-            te_cluster[i] = model.treatment_effect_cluster(t_norm.tolist())
+            te_cluster[i] = model.treatment_effect_cluster(t.tolist())
 
         return te_cluster
 
