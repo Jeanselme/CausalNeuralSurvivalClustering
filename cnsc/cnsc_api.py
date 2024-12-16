@@ -29,6 +29,12 @@ class CausalNeuralSurvivalClustering:
     if self.cuda > 0:
       model = model.cuda()
     return model
+  
+  def _normalise(self, time, save = False):
+    time = time + 1 # Do not want event at time 0
+    if save: 
+      self.max_time = time.max()
+    return time / self.max_time # Normalise time between 0 and 1
 
   def fit(self, x, t, e, a, vsize = 0.15, val_data = None,
           optimizer = "Adam", random_state = 100, **args):
@@ -49,6 +55,9 @@ class CausalNeuralSurvivalClustering:
                                                    vsize, val_data,
                                                    random_state)
     x_train, t_train, e_train, a_train, x_val, t_val, e_val, a_val = processed_data
+
+    t_train = self._normalise(t_train, save = True)
+    t_val = self._normalise(t_val)
 
     model = self._gen_torch_model(x_train.size(1), optimizer)
     if self.correct:
@@ -76,6 +85,7 @@ class CausalNeuralSurvivalClustering:
                       "before calling `_eval_nll`.")
     processed_data = self._preprocess_training_data(x, t, e, a, 0, None, 0)
     _, _, _, _, x_val, t_val, e_val, a_val = processed_data
+    t_val = self._normalise(t_val)
     if self.cuda == 2:
       x_val, t_val, e_val, a_val = x_val.cuda(), t_val.cuda(), e_val.cuda(), a_val.cuda()
 
@@ -108,7 +118,7 @@ class CausalNeuralSurvivalClustering:
     if self.fitted:
       scores = []
       for t_ in t:
-        t_ = torch.DoubleTensor([t_] * len(x)).to(x.device)
+        t_ = self._normalise(torch.DoubleTensor([t_] * len(x))).to(x.device)
         log_alphas, log_sr, _ = self.torch_model(x, t_)
         scores.append(np.take_along_axis(torch.exp(log_alphas + log_sr).sum(2).detach().cpu().numpy(), 
                                          a.cpu().numpy().reshape((-1, 1)), axis = 1))
@@ -150,7 +160,7 @@ class CausalNeuralSurvivalClustering:
     if not isinstance(t, list):
       t = [t]
     if self.fitted:
-      t = torch.tensor(t).double()
+      t = self.normalise(torch.tensor(t).double())
       x = torch.zeros(len(t), self.torch_model.input_dim, dtype = torch.double) # + 1 for treatment
       # Push on the right device
       if self.cuda > 0:
