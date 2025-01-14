@@ -27,7 +27,7 @@ for size in [300, 30000]:
 
     # Hyperparameters and evaluations
     max_epochs = 1000
-    grid_search = 100
+    grid_search = 500
     layers = [[50] * j for j in range(4)]
 
     # Clustering
